@@ -1,9 +1,7 @@
 package ru.ac.uniyar.testingcourse.conference;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 
 /**
  * Registration fee that must be paid by the participant.
@@ -14,9 +12,13 @@ public class Fee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private final Integer amount;
+    private Integer amount;
     private Boolean paid = false;
 
+    @OneToOne(mappedBy = "fee")
+    private Participant participant;
+
+    public Fee() {}
     public Fee(Integer amount) {
         this.amount = amount;
     }
@@ -41,3 +43,4 @@ public class Fee {
     }
 
 }
+

@@ -1,22 +1,28 @@
 package ru.ac.uniyar.testingcourse.conference;
 
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 /**
  * Scientist participating in a conference
  */
+@Entity
 public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
-    private final String name;
-    private final String surname;
-    private final String email;
+    private Integer id;
+    private String name;
+    private String surname;
+    private String email;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fee_id", referencedColumnName = "id")
+    private Fee fee;
+    private Boolean blackListed = false;
 
+    public Participant() {}
     public Participant(String name, String surname, String email) {
         this.name = name;
         this.surname = surname;
@@ -24,7 +30,7 @@ public class Participant {
     }
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public String getEmail() {
@@ -38,6 +44,14 @@ public class Participant {
     public String getSurname() {
         return surname;
     }
+    public void setFee(Fee fee) {this.fee = fee;}
+    public Fee getFee(){return this.fee;}
+    public void setBlackListed(Boolean bool) {
+        this.blackListed = bool;
+    }
+    public Boolean getBlackListed() {
+        return this.blackListed;
+    }
 
     /**
      * @return full name: [name] [surname]
@@ -46,3 +60,4 @@ public class Participant {
         return String.format("%s %s", getName(), getSurname());
     }
 }
+
